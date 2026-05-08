@@ -1,0 +1,12 @@
+[
+    {
+        "email": "mohamed@gmail.com",
+        "Food": 4000,
+        "Bills": 1000,
+        "Transport": 1000,
+        "Shopping": 2000,
+        "Entertainment": 50,
+        "Health": 500,
+        "Other": 7000
+    }
+]
