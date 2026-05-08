@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title data-i18n="nav_settings">Settings</title>
+	<link rel="stylesheet" href="../assets/css/settings.css">
+	<!-- i18n: load synchronously so language applies before the page renders -->
+	<script src="../assets/js/i18n.js"></script>
+</head>
+
+<body>
+
+	<main class="settings-shell">
+
+		<!-- Sidebar Navigation -->
+		<aside class="sidebar">
+			<div style="font-weight: 600; font-size: 18px; padding-left: 10px; margin-bottom: 4px;" data-i18n="nav_settings">Settings</div>
+			<div class="small" style="padding-left: 10px; margin-bottom: 8px;">Manage your account</div>
+			<nav class="nav">
+				<div class="tab active" data-target="profilePanel">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+						<circle cx="12" cy="7" r="4"></circle>
+					</svg>
+					<span data-i18n="section_account">Account</span>
+				</div>
+				<div class="tab" data-target="securityPanel">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+					</svg>
+					<span data-i18n="section_security">Security</span>
+				</div>
+			</nav>
+		</aside>
+
+		<!-- Content Panels -->
+		<section class="content">
+
+			<!-- Profile Panel -->
+			<div id="profilePanel" class="panel card active show">
+				<div class="header">
+					<div>
+						<h1 data-i18n="section_account">Account</h1>
+						<p class="lead">Update your display name and email address.</p>
+					</div>
+				</div>
+
+				<div id="profileAlertContainer"></div>
+
+				<form id="profileForm" novalidate>
+					<div class="field">
+						<label for="name" data-i18n="label_name">Name</label>
+						<input id="name" name="name" type="text" placeholder="Your full name"
+							autocomplete="name" data-i18n-placeholder="placeholder_name">
+						<div id="nameError" class="inline-error" style="display:none"></div>
+					</div>
+
+					<div class="field">
+						<label for="email" data-i18n="label_email">Email Address</label>
+						<input id="email" name="email" type="email" placeholder="you@example.com"
+							autocomplete="email" data-i18n-placeholder="placeholder_email">
+						<div id="emailError" class="inline-error" style="display:none"></div>
+					</div>
+
+					<div class="actions" style="margin-top: 8px;">
+						<button id="profileSubmitBtn" class="primary" type="submit">
+							<span class="btn-text" data-i18n="btn_save_changes">Save Changes</span>
+						</button>
+					</div>
+				</form>
+			</div>
+
+			<!-- Security Panel -->
+			<div id="securityPanel" class="panel card">
+				<div class="header">
+					<div>
+						<h1 data-i18n="title_change_password">Change Password</h1>
+						<p class="lead">Update your account password. Use a strong password to keep your account secure.
+						</p>
+					</div>
+				</div>
+
+				<div id="securityAlertContainer"></div>
+
+				<form id="securityForm" novalidate>
+					<div class="field">
+						<label for="oldPassword" data-i18n="label_old_password">Old Password</label>
+						<div class="input-row">
+							<input id="oldPassword" name="oldPassword" type="password"
+								autocomplete="current-password" placeholder="Enter current password"
+								data-i18n-placeholder="placeholder_old_pass">
+							<button type="button" class="toggle-btn" data-target="oldPassword">Show</button>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="newPassword" data-i18n="label_new_password">New Password</label>
+						<div class="input-row">
+							<input id="newPassword" name="newPassword" type="password"
+								autocomplete="new-password" placeholder="Enter new password"
+								data-i18n-placeholder="placeholder_new_pass">
+							<button type="button" class="toggle-btn" data-target="newPassword">Show</button>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="confirmPassword" data-i18n="label_confirm_password">Confirm Password</label>
+						<div class="input-row">
+							<input id="confirmPassword" name="confirmPassword" type="password"
+								autocomplete="new-password" placeholder="Confirm new password"
+								data-i18n-placeholder="placeholder_conf_pass">
+							<button type="button" class="toggle-btn" data-target="confirmPassword">Show</button>
+						</div>
+						<div id="securityInlineError" class="inline-error" style="display:none"></div>
+					</div>
+
+					<div class="actions" style="margin-top: 8px;">
+						<button id="securitySubmitBtn" class="primary" type="submit">
+							<span class="btn-text" data-i18n="btn_update_password">Update Password</span>
+						</button>
+						<div class="small">Changes take effect immediately.</div>
+					</div>
+				</form>
+			</div>
+
+		</section>
+	</main>
+
+	<script src="../assets/js/settings.js" defer></script>
+</body>
+
+</html>
