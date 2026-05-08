@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول - مشروع معاذ</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="../assets/css/pro.css"></head>
+<body>
+
+<div class="layout-wrapper">
+  
+  <!-- Left Side: Branding & Animation -->
+  <div class="animation-side">
+    <div class="branding-text">
+      <p style="font-size: 22px; font-weight: 700; color: var(--accent-dark); margin-bottom: 20px;">استثمر بذكاء مع نظامنا الديناميكي</p>
+    </div>
+    
+    <div class="gears-container">
+      <div class="watermark-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+      <i class="fa-solid fa-gear gear gear-1"></i>
+      <i class="fa-solid fa-gear gear gear-2"></i>
+      <i class="fa-solid fa-gear gear gear-3"></i>
+    </div>
+  </div>
+
+  <!-- Right Side: Form -->
+  <div class="form-side">
+    <div class="auth-container">
+      
+      <div class="form-header">
+        <h2 id="formTitle">إنشاء حساب جديد</h2>
+      </div>
+
+      <div id="message"></div>
+
+      <!-- REGISTER FORM -->
+      <form id="registrationForm">
+        <div class="input-group">
+          <label>الاسم الكامل</label>
+          <i class="fa-regular fa-user"></i>
+          <input type="text" name="name" placeholder="أدخل اسمك الكامل" required>
+        </div>
+        
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
+        </div>
+        
+        <div class="input-group">
+          <label>كلمة المرور</label>
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" placeholder="أدخل كلمة المرور" required>
+        </div>
+        
+        <div class="input-group select-wrapper">
+          <label>العملة المفضلة</label>
+          <i class="fa-solid fa-coins"></i>
+          <select name="currency">
+            <option value="USD">دولار أمريكي (USD)</option>
+            <option value="EUR">يورو (EUR)</option>
+            <option value="SAR">ريال سعودي (SAR)</option>
+            <option value="EGP">جنيه مصري (EGP)</option>
+          </select>
+        </div>
+
+        <div id="errorMessage"></div>
+
+        <button type="submit">تسجيل</button>
+        <div class="switch">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
+      </form>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" style="display:none;">
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
+        </div>
+        <div class="input-group">
+          <label>كلمة المرور</label>
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" placeholder="أدخل كلمة المرور" required>
+        </div>
+        <button type="submit">دخول</button>
+        <div class="switch">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
+      </form>
+
+      <!-- DASHBOARD (Fallback) -->
+      <div id="dashboard">
+        <h2 id="welcomeText" style="margin-bottom:10px; color:var(--text-dark);">مرحباً 🎉</h2>
+        
+        <div id="adminPanel" style="margin-bottom:20px; padding:20px; background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.2); border-radius:12px;">
+          <h3 style="margin-bottom:15px; font-size:16px; color:var(--text-dark);">👑 لوحة الإدارة</h3>
+          <button onclick="viewUsers()" style="margin-bottom:10px; width:100%; padding:10px; background:var(--accent-green); border:none; color:white; border-radius:8px;">عرض المستخدمين</button>
+          <button style="width:100%; padding:10px; border-radius:8px; background:rgba(249, 115, 22, 0.1); color:#ea580c; border:1px solid rgba(249,115,22,0.2);" onclick="deleteUser()">حذف مستخدم</button>
+        </div>
+
+        <button class="logout-btn" style="width:100%; padding:10px; border-radius:8px;" onclick="logout()">تسجيل الخروج</button>
+      </div>
+
+      <!-- Glowing Join Now Text -->
+      <div class="join-now-text" id="joinNowText">انضم إلينا الآن</div>
+
+    </div>
+  </div>
+
+</div><script src="../assets/js/pro.js" defer></script>
+</body>
+</html>

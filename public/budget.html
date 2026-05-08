@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="title_budget_dashboard">Budget Dashboard</title>
+
+  <!-- Critical: Early theme loader (no defer) -->
+  <script src="../assets/js/budget-early.js?v=4"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/budget.css?v=4">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <div class="app">
+    <div class="topbar">
+      <div class="left">
+        <div class="logo">
+          <svg viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left Candle -->
+            <rect x="14" y="34" width="8" height="16" fill="#10B981" filter="drop-shadow(0 0 3px #10B981)" />
+            <line x1="18" y1="26" x2="18" y2="58" stroke="#10B981" stroke-width="3"
+              filter="drop-shadow(0 0 2px #10B981)" />
+
+            <!-- Center Candle with Dollar -->
+            <rect x="28" y="20" width="8" height="30" fill="rgba(16,185,129,0.15)" stroke="#10B981" stroke-width="2"
+              filter="drop-shadow(0 0 4px #10B981)" />
+            <line x1="32" y1="8" x2="32" y2="60" stroke="#10B981" stroke-width="3"
+              filter="drop-shadow(0 0 3px #10B981)" />
+            <text x="32" y="44" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="28"
+              fill="#10B981" text-anchor="middle" filter="drop-shadow(0 0 6px #10B981)">$</text>
+
+            <!-- Right Candle -->
+            <rect x="42" y="14" width="8" height="20" fill="#10B981" filter="drop-shadow(0 0 3px #10B981)" />
+            <line x1="46" y1="6" x2="46" y2="42" stroke="#10B981" stroke-width="3"
+              filter="drop-shadow(0 0 2px #10B981)" />
+          </svg>
+        </div>
+        <div>
+          <div class="title" data-i18n="title_budget_dashboard">Budget Dashboard</div>
+          <div class="subtitle" data-i18n="subtitle_finances">Personal finances — clean &amp; simple</div>
+        </div>
+      </div>
+
+      <div class="right-nav-group" style="display:flex; align-items:center; gap:24px;">
+        <nav class="top-nav">
+          <a href="#" id="navDashboard" data-i18n="nav_dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+          <a href="#" id="navExpenses" data-i18n="nav_expenses"><i class="fa-solid fa-receipt"></i> Expenses</a>
+          <a href="#" id="navAnalytics" data-i18n="nav_analytics"><i class="fa-solid fa-chart-pie"></i> Analytics</a>
+          <a href="#" id="navBudgets" data-i18n="nav_budgets"><i class="fa-solid fa-piggy-bank"></i> Budgets</a>
+          <a href="settings.html" id="settingsLink" data-i18n="nav_settings"><i class="fa-solid fa-gear"></i>
+            Settings</a>
+        </nav>
+
+        <div class="actions">
+          <button class="icon-btn" id="topThemeToggle" title="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button class="icon-btn" id="topNotifToggle" title="Toggle Notifications">
+            <i class="fa-solid fa-bell-slash"></i>
+          </button>
+          <button class="logout" onclick="logout()" data-i18n="nav_logout">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <main id="mainContent">
+        <section id="dashboardSection">
+          <div id="pageContent" class="dashboard">
+
+            <div class="widget">
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:6px">
+                <label for="salaryInput" style="font-size:13px;color:var(--muted)"
+                  data-i18n="label_monthly_salary">Monthly Salary</label>
+                <div style="display:flex;gap:10px;align-items:center">
+                  <input id="salaryInput" type="number" min="0" placeholder="Enter your salary"
+                    data-i18n-placeholder="placeholder_salary"
+                    style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;outline:none;max-width:240px">
+                  <button id="saveSalaryBtn" class="primary" type="button" data-i18n="btn_save_salary">Save
+                    Salary</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="widget overview">
+              <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div class="label" data-i18n="label_total_salary">Total Salary</div>
+                  <div
+                    style="width:36px;height:36px;border-radius:8px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;">
+                    <i class="fa-solid fa-wallet" style="color:var(--accent-a); font-size:18px;"></i>
+                  </div>
+                </div>
+                <div class="value">$ <span id="total">0</span></div>
+              </div>
+
+              <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div class="label" data-i18n="label_total_expenses">Total Expenses</div>
+                  <div
+                    style="width:36px;height:36px;border-radius:8px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;">
+                    <i class="fa-solid fa-arrow-trend-down" style="color:var(--danger); font-size:18px;"></i>
+                  </div>
+                </div>
+                <div class="value">$ <span id="expenses">0</span></div>
+              </div>
+
+              <div class="card" id="remainingCard">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div class="label" data-i18n="label_remaining">Remaining</div>
+                  <div
+                    style="width:36px;height:36px;border-radius:8px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;">
+                    <i class="fa-solid fa-piggy-bank" style="color:var(--accent-a); font-size:18px;"></i>
+                  </div>
+                </div>
+                <div class="value">$ <span id="remaining">0</span></div>
+              </div>
+            </div>
+
+            <!-- Monthly Timer & Calendar Widget -->
+            <div class="widget" id="monthProgressWidget"
+              style="margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(56, 189, 248, 0.05)); border: 1px solid rgba(99, 102, 241, 0.2); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <h3
+                  style="margin:0; font-size:18px; font-weight:700; color:var(--text-main); display:flex; align-items:center; gap:8px;">
+                  <i class="fa-regular fa-calendar-days" style="color:var(--accent-b)"></i>
+                  <span id="currentDateDisplay">Date</span>
+                </h3>
+                <div style="font-size:14px; color:var(--muted);" id="monthProgressMessage">Stay on track! You have X
+                  days to hit your savings goal.</div>
+                <div style="font-size:16px; font-weight:600; margin-top:4px;" id="daysRemainingDisplay">⏳ X Days left in
+                  Month</div>
+              </div>
+
+              <!-- Circular Progress Ring -->
+              <div
+                style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg width="80" height="80" viewBox="0 0 100 100" style="transform: rotate(-90deg); overflow: visible;">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(150,150,150,0.15)" stroke-width="8"></circle>
+                  <circle id="monthProgressRing" cx="50" cy="50" r="40" fill="none" stroke="var(--accent-a)"
+                    stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="0" stroke-linecap="round"
+                    style="transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;"></circle>
+                </svg>
+                <div style="position:absolute; font-weight:700; font-size:14px; color:var(--text-main)"
+                  id="monthProgressPct">0%</div>
+              </div>
+            </div>
+
+            <!-- Monthly Performance Widget -->
+            <div class="widget" id="monthlyPerformanceWidget" style="display:none; margin-bottom:1.5rem;">
+              <h3 style="margin:0 0 16px 0;font-size:16px;display:flex;align-items:center;gap:8px">
+                <i class="fa-solid fa-chart-line" style="color:var(--accent-b)"></i><span
+                  data-i18n="title_monthly_performance"> Monthly Performance</span>
+              </h3>
+              <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                <div>
+                  <div style="font-size:13px; color:var(--muted)" data-i18n="label_this_month_spending">This Month's
+                    Spending</div>
+                  <div style="font-size:20px; font-weight:700" id="perfThisMonth">$0</div>
+                </div>
+                <div>
+                  <div style="font-size:13px; color:var(--muted)" data-i18n="label_last_month_spending">Last Month's
+                    Spending</div>
+                  <div style="font-size:20px; font-weight:700" id="perfLastMonth">$0</div>
+                </div>
+                <div style="border-left:1px solid var(--border-color); padding-left:1rem;">
+                  <div style="font-size:13px; color:var(--muted)" id="perfStatusLabel" data-i18n="label_total_saved">
+                    Total Saved</div>
+                  <div style="font-size:20px; font-weight:700; color:var(--success)" id="perfStatusAmount">$0</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="widget form-area">
+              <h3 data-i18n="title_add_expense">➕ Add Expense</h3>
+
+              <form onsubmit="event.preventDefault(); addExpense();">
+                <div class="form-row">
+                  <div class="field">
+                    <label for="title" data-i18n="label_expense_name">Expense name</label>
+                    <input type="text" id="title" placeholder="e.g., Groceries"
+                      data-i18n-placeholder="placeholder_expense">
+                  </div>
+
+                  <div class="field" style="max-width:160px">
+                    <label for="amount" data-i18n="label_amount">Amount</label>
+                    <input type="number" id="amount" placeholder="0" min="0" step="0.01">
+                  </div>
+
+                  <div class="field" style="max-width:180px">
+                    <label for="expenseCategory" data-i18n="label_category">Category</label>
+                    <select id="expenseCategory">
+                      <option value="" data-i18n="opt_auto_detect">Auto-detect</option>
+                      <option value="Food">🍕 Food</option>
+                      <option value="Bills">💡 Bills</option>
+                      <option value="Transport">🚗 Transport</option>
+                      <option value="Shopping">🛒 Shopping</option>
+                      <option value="Entertainment">🎮 Entertainment</option>
+                      <option value="Health">💊 Health</option>
+                      <option value="Other">📦 Other</option>
+                    </select>
+                  </div>
+
+                  <div style="display:flex;align-items:end">
+                    <button class="primary" type="button" onclick="addExpense()" data-i18n="btn_add_expense">Add
+                      Expense</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="dashboard-budget-widget">
+              <h3 style="margin:0 0 16px 0;font-size:16px;display:flex;align-items:center;gap:8px">
+                <i class="fa-solid fa-chart-line" style="color:var(--accent-a)"></i><span
+                  data-i18n="title_budget_progress"> Budget Progress</span>
+              </h3>
+              <div id="dashboardBudgetContainer">
+                <div style="color:var(--muted); font-size:13px" data-i18n="msg_loading_budgets">Loading budgets...</div>
+              </div>
+            </div>
+
+            <div class="widget table-area">
+              <h3 style="margin:0 0 10px 0" data-i18n="title_expenses_table">🧾 Expenses</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th data-i18n="th_title">Title</th>
+                      <th data-i18n="th_category_progress">Category Progress</th>
+                      <th style="width:120px" data-i18n="th_amount">Amount</th>
+                      <th style="width:110px" data-i18n="th_date">Date</th>
+                      <th style="width:100px" data-i18n="th_actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table"></tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Settings Section (hidden by default) -->
+        <section id="settingsSection" class="section-hidden" aria-hidden="true">
+          <div class="accordion">
+
+            <!-- 👤 Account Section -->
+            <div class="accordion-item active">
+              <button class="accordion-header">
+                <div class="accordion-header-left" data-i18n="section_account"><i class="fa-regular fa-user"></i>
+                  Account</div>
+                <i class="fa-solid fa-chevron-down accordion-icon"></i>
+              </button>
+              <div class="accordion-content">
+                <div id="profileAlert" aria-live="polite"></div>
+                <form id="editProfileForm" novalidate>
+                  <div class="form-row" style="margin-bottom:16px">
+                    <div class="field">
+                      <label for="profileName" data-i18n="label_name">Name</label>
+                      <input id="profileName" name="name" type="text" autocomplete="name" placeholder="Your full name"
+                        data-i18n-placeholder="placeholder_name">
+                      <div id="profileNameError" class="inline-error" style="display:none"></div>
+                    </div>
+                    <div class="field">
+                      <label for="profileEmail" data-i18n="label_email">Email</label>
+                      <input id="profileEmail" name="email" type="email" autocomplete="email"
+                        placeholder="you@example.com" data-i18n-placeholder="placeholder_email">
+                      <div id="profileEmailError" class="inline-error" style="display:none"></div>
+                    </div>
+                  </div>
+                  <button id="profileSaveBtn" class="primary" type="submit" style="margin-bottom:8px;">
+                    <span id="profileSpinner" class="spinner" style="display:none"></span>
+                    <span id="profileBtnText" data-i18n="btn_save_changes">Save Changes</span>
+                  </button>
+                </form>
+                <hr class="accordion-divider">
+                <div class="accordion-danger-zone">
+                  <h4><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="label_danger_zone">Danger
+                      Zone</span></h4>
+                  <p data-i18n="text_danger_zone">Permanently delete your account and all associated data. This action
+                    cannot be undone.</p>
+                  <button id="initDeleteBtn" class="accordion-danger-btn"><i class="fa-solid fa-trash-can"></i> <span
+                      data-i18n="btn_delete_account">Delete Account</span></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 🔐 Security Section -->
+            <div class="accordion-item">
+              <button class="accordion-header">
+                <div class="accordion-header-left" data-i18n="section_security"><i
+                    class="fa-solid fa-shield-halved"></i> Security</div>
+                <i class="fa-solid fa-chevron-down accordion-icon"></i>
+              </button>
+              <div class="accordion-content">
+                <h4 style="margin:0 0 14px 0;font-size:15px;" data-i18n="title_change_password">Change Password</h4>
+                <div id="settingsAlert" aria-live="polite"></div>
+                <form id="changePasswordFormEmbedded" novalidate>
+                  <div class="field">
+                    <label for="oldPasswordEmbedded" data-i18n="label_old_password">Old Password</label>
+                    <input id="oldPasswordEmbedded" name="oldPassword" type="password" autocomplete="current-password"
+                      placeholder="Enter current password" data-i18n-placeholder="placeholder_old_pass">
+                  </div>
+                  <div class="form-row">
+                    <div class="field">
+                      <label for="newPasswordEmbedded" data-i18n="label_new_password">New Password</label>
+                      <input id="newPasswordEmbedded" name="newPassword" type="password" autocomplete="new-password"
+                        placeholder="Enter new password" data-i18n-placeholder="placeholder_new_pass">
+                    </div>
+                    <div class="field">
+                      <label for="confirmPasswordEmbedded" data-i18n="label_confirm_password">Confirm Password</label>
+                      <input id="confirmPasswordEmbedded" name="confirmPassword" type="password"
+                        autocomplete="new-password" placeholder="Confirm new password"
+                        data-i18n-placeholder="placeholder_conf_pass">
+                      <div id="inlineErrorEmbedded" class="inline-error" style="display:none"></div>
+                    </div>
+                  </div>
+                  <button id="submitBtnEmbedded" class="primary" type="submit" style="margin-top:6px;"
+                    data-i18n="btn_update_password">Update Password</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- 🎨 Preferences Section -->
+            <div class="accordion-item">
+              <button class="accordion-header">
+                <div class="accordion-header-left" data-i18n="section_preferences"><i class="fa-solid fa-palette"></i>
+                  Preferences</div>
+                <i class="fa-solid fa-chevron-down accordion-icon"></i>
+              </button>
+              <div class="accordion-content">
+                <div id="preferencesAlert" aria-live="polite"></div>
+                <form id="preferencesForm" onsubmit="event.preventDefault(); savePreferences();">
+                  <div class="field" style="margin-bottom:18px">
+                    <label style="font-size:14px;font-weight:600;color:var(--text-main)"
+                      data-i18n="label_appearance">Appearance</label>
+                    <div class="toggle-group" id="prefDarkModeGroup">
+                      <button type="button" class="toggle-item active" data-value="0"
+                        data-i18n="btn_light_mode">Light</button>
+                      <button type="button" class="toggle-item" data-value="1" data-i18n="btn_dark_mode">Dark</button>
+                    </div>
+                  </div>
+                  <div class="field" style="margin-bottom:18px">
+                    <label style="font-size:14px;font-weight:600;color:var(--text-main)"
+                      data-i18n="label_notifications">Notifications</label>
+                    <div class="toggle-group" id="prefNotificationsGroup">
+                      <button type="button" class="toggle-item active" data-value="0"
+                        data-i18n="btn_notif_off">Off</button>
+                      <button type="button" class="toggle-item" data-value="1" data-i18n="btn_notif_on">On</button>
+                    </div>
+                  </div>
+                  <div class="field" style="margin-bottom:24px">
+                    <label style="font-size:14px;font-weight:600;color:var(--text-main)"
+                      data-i18n="label_language">Language</label>
+                    <div class="toggle-group" id="prefLanguageGroup">
+                      <button type="button" class="toggle-item active" data-value="en" data-i18n="btn_lang_en"
+                        onclick="changeLanguage('en')">EN</button>
+                      <button type="button" class="toggle-item" data-value="ar" data-i18n="btn_lang_ar"
+                        onclick="changeLanguage('ar')">AR</button>
+                    </div>
+                  </div>
+                  <button id="preferencesSaveBtn" class="primary" type="submit">
+                    <span id="preferencesSpinner" class="spinner" style="display:none"></span>
+                    <span id="preferencesBtnText" data-i18n="btn_save_preferences">Save Preferences</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Expenses Section (hidden by default) -->
+        <section id="expensesSection" class="section-hidden" aria-hidden="true">
+          <div class="widget">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+              <div>
+                <h2 style="margin:0;font-size:20px;font-weight:700" data-i18n="title_expenses_section">🧾 Expenses</h2>
+                <p style="margin:4px 0 0;font-size:13px;color:var(--muted)" data-i18n="subtitle_expenses_section">All
+                  your recorded expenses</p>
+              </div>
+              <button id="expensesRefreshBtn" class="logout"
+                style="display:flex;align-items:center;gap:6px;padding:8px 14px" data-i18n="btn_refresh">
+                ↺ Refresh
+              </button>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+              <label data-i18n="label_category">Category:</label>
+              <select id="filterCategory">
+                <option value="" data-i18n="opt_all_categories">All Categories</option>
+                <option value="Food">🍕 Food</option>
+                <option value="Bills">💡 Bills</option>
+                <option value="Transport">🚗 Transport</option>
+                <option value="Shopping">🛒 Shopping</option>
+                <option value="Entertainment">🎮 Entertainment</option>
+                <option value="Health">💊 Health</option>
+                <option value="Other">📦 Other</option>
+              </select>
+              <label data-i18n="label_month">Month:</label>
+              <select id="filterMonth">
+                <option value="" data-i18n="opt_all_months">All Months</option>
+              </select>
+            </div>
+
+            <div id="expensesStatus"
+              style="display:none;padding:14px;border-radius:10px;font-size:14px;margin-bottom:14px"></div>
+
+            <div class="table-wrap">
+              <table id="expensesFullTable" style="width:100%;border-collapse:separate;border-spacing:0 10px">
+                <thead>
+                  <tr>
+                    <th style="text-align:left;padding:10px 16px;font-size:13px;color:var(--muted)">#</th>
+                    <th style="text-align:left;padding:10px 16px;font-size:13px;color:var(--muted)"
+                      data-i18n="th_title">Title</th>
+                    <th style="text-align:left;padding:10px 16px;font-size:13px;color:var(--muted)"
+                      data-i18n="th_category_progress">Category Progress</th>
+                    <th style="text-align:left;padding:10px 16px;font-size:13px;color:var(--muted);width:120px"
+                      data-i18n="th_amount">Amount</th>
+                    <th style="text-align:left;padding:10px 16px;font-size:13px;color:var(--muted);width:110px"
+                      data-i18n="th_date">Date</th>
+                    <th style="text-align:left;padding:10px 16px;font-size:13px;color:var(--muted);width:100px"
+                      data-i18n="th_actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="expensesFullBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Analytics Section (hidden by default) -->
+        <section id="analyticsSection" class="section-hidden" aria-hidden="true">
+          <div class="dashboard">
+
+            <!-- Analytics Header & Filter -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+              <h2 style="margin:0; font-size:20px; font-weight:700" data-i18n="title_analytics">Analytics</h2>
+              <div style="display:flex; gap:12px; align-items:center;">
+
+                <!-- Day Picker (hidden by default) -->
+                <input type="date" id="analyticsDayPicker"
+                  style="display:none; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-main); font-size:13px; outline:none; cursor:pointer; min-width:130px; font-family:inherit;">
+
+                <!-- Month Picker (visible by default) -->
+                <select id="analyticsMonthPicker"
+                  style="display:inline-block; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-main); font-size:13px; outline:none; cursor:pointer; min-width:110px; font-family:inherit;">
+                  <!-- Options populated dynamically -->
+                </select>
+
+                <!-- Year Picker (hidden by default) -->
+                <select id="analyticsYearPicker"
+                  style="display:none; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-main); font-size:13px; outline:none; cursor:pointer; min-width:90px; font-family:inherit;">
+                  <!-- Options populated dynamically -->
+                </select>
+
+                <div class="toggle-group" id="analyticsTimeFilter">
+                  <button type="button" class="toggle-item" data-value="day" data-i18n="btn_filter_day">Day</button>
+                  <button type="button" class="toggle-item active" data-value="month"
+                    data-i18n="btn_filter_month">Month</button>
+                  <button type="button" class="toggle-item" data-value="year" data-i18n="btn_filter_year">Year</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="analytics-grid" id="analyticsSummaryCards">
+              <div class="analytics-card">
+                <div class="ac-icon purple"><i class="fa-solid fa-wallet"></i></div>
+                <div class="ac-label" data-i18n="label_total_spent">Total Spent</div>
+                <div class="ac-value" id="anTotalSpent">$0</div>
+                <div class="ac-sub" id="anTotalSpentSub" data-i18n="label_this_month">This month</div>
+              </div>
+              <div class="analytics-card">
+                <div class="ac-icon green"><i class="fa-solid fa-calculator"></i></div>
+                <div class="ac-label" data-i18n="label_avg_per_expense">Avg per Expense</div>
+                <div class="ac-value" id="anAvgExpense">$0</div>
+                <div class="ac-sub" id="anAvgSub" data-i18n="label_across_all">across all expenses</div>
+              </div>
+              <div class="analytics-card">
+                <div class="ac-icon orange"><i class="fa-solid fa-crown"></i></div>
+                <div class="ac-label" data-i18n="label_top_category">Top Category</div>
+                <div class="ac-value" id="anTopCategory">—</div>
+                <div class="ac-sub" id="anTopCatSub" data-i18n="label_highest_spending">highest spending</div>
+              </div>
+              <div class="analytics-card">
+                <div class="ac-icon blue"><i class="fa-solid fa-list-ol"></i></div>
+                <div class="ac-label" data-i18n="label_total_expenses_count">Total Expenses</div>
+                <div class="ac-value" id="anExpenseCount">0</div>
+                <div class="ac-sub" id="anCountSub" data-i18n="label_recorded_expenses">recorded expenses</div>
+              </div>
+            </div>
+
+            <!-- Savings History Section -->
+            <div class="widget" id="savingsHistoryWidget"
+              style="display:none; padding:18px; margin-bottom:1.5rem; background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.02)); border:1px solid rgba(34,197,94,0.2);">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <h4 style="margin:0 0 6px 0; font-size:16px; color:var(--success)"><i
+                      class="fa-solid fa-piggy-bank"></i><span data-i18n="title_savings_history"> Savings History</span>
+                  </h4>
+                  <div style="font-size:13px; color:var(--muted)" data-i18n="subtitle_savings_history">Your monthly
+                    success rate based on salary and savings.
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:24px; font-weight:800; color:var(--success)" id="successRateValue">0%</div>
+                  <div style="font-size:12px; color:var(--muted)" data-i18n="label_success_rate">Success Rate</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-row">
+              <div class="chart-box">
+                <h4><i class="fa-solid fa-chart-pie" style="color:var(--accent-a);margin-right:8px"></i><span
+                    data-i18n="title_category_distribution">Category Distribution</span></h4>
+                <div class="chart-canvas-wrap">
+                  <canvas id="categoryPieChart"></canvas>
+                </div>
+              </div>
+              <div class="chart-box">
+                <h4><i class="fa-solid fa-chart-bar" style="color:var(--accent-b);margin-right:8px"></i><span
+                    data-i18n="title_monthly_spending">Monthly Spending</span></h4>
+                <div class="chart-canvas-wrap">
+                  <canvas id="monthlyBarChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Smart Insights -->
+            <div class="widget" style="padding:22px">
+              <h4 style="margin:0 0 14px;font-size:16px;font-weight:700"><i class="fa-solid fa-lightbulb"
+                  style="color:#f59e0b;margin-right:8px"></i><span data-i18n="title_smart_insights">Smart
+                  Insights</span></h4>
+              <div class="insights-panel" id="insightsPanel">
+                <div class="insight-card">
+                  <div class="insight-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                  <div data-i18n="msg_loading_insights">Loading insights...</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Breakdown -->
+            <div class="widget" style="padding:22px">
+              <h4 style="margin:0 0 14px;font-size:16px;font-weight:700"><i class="fa-solid fa-layer-group"
+                  style="color:var(--accent-a);margin-right:8px"></i><span data-i18n="title_category_breakdown">Category
+                  Breakdown</span></h4>
+              <div class="table-wrap">
+                <table class="cat-breakdown" id="categoryBreakdownTable">
+                  <thead>
+                    <tr>
+                      <th data-i18n="th_category">Category</th>
+                      <th data-i18n="th_amount">Amount</th>
+                      <th data-i18n="th_share">Share</th>
+                      <th data-i18n="th_count">Count</th>
+                    </tr>
+                  </thead>
+                  <tbody id="categoryBreakdownBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Budgets Section (hidden by default) -->
+        <section id="budgetsSection" class="section-hidden" aria-hidden="true">
+          <div class="dashboard">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+              <h2 style="margin:0; font-size:20px; font-weight:700" data-i18n="title_category_budgets">Category Budgets
+              </h2>
+            </div>
+
+            <div class="charts-row" style="align-items: flex-start;">
+              <!-- Left: Progress Bars -->
+              <div class="widget" style="padding:22px;">
+                <h4 style="margin:0 0 16px;font-size:16px;font-weight:700"><i class="fa-solid fa-bullseye"
+                    style="color:var(--accent-a);margin-right:8px"></i><span
+                    data-i18n="title_tracking_overview">Tracking Overview</span></h4>
+                <div id="budgetProgressContainer" style="display:flex; flex-direction:column; gap:20px;">
+                  <div style="color:var(--muted); font-size:13px">Loading budgets...</div>
+                </div>
+              </div>
+
+              <!-- Right: Edit Form -->
+              <div class="widget" style="padding:22px;">
+                <h4 style="margin:0 0 16px;font-size:16px;font-weight:700"><i class="fa-solid fa-pen-to-square"
+                    style="color:var(--accent-b);margin-right:8px"></i><span data-i18n="title_set_budgets">Set Monthly
+                    Budgets</span></h4>
+
+                <!-- Smart Allocation UI -->
+                <div class="alloc-container"
+                  style="background:var(--bg-1); padding:16px; border-radius:12px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.05); box-shadow:inset 0 4px 6px rgba(0,0,0,0.1);">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <div><span style="color:var(--muted);font-size:13px" data-i18n="label_total_salary_limit">Total
+                        Salary Limit</span><br><strong style="font-size:18px; color:var(--text-main)"
+                        id="allocTotalSalary">$0</strong></div>
+                    <div style="text-align:right"><span style="color:var(--muted);font-size:13px"
+                        data-i18n="label_remaining_balance">Remaining
+                        Balance</span><br><strong style="font-size:18px; color:var(--success)"
+                        id="allocRemaining">$0</strong></div>
+                  </div>
+
+                  <div class="tracker-track" style="height:12px;">
+                    <div id="allocBarFill" class="tracker-fill tracker-safe" style="width:0%"></div>
+                  </div>
+
+                  <div id="allocWarningMsg"
+                    style="color:#ef4444; font-size:13px; font-weight:700; margin-top:10px; display:none; text-align:center; animation:pulse-red 1.5s infinite;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="msg_exceeded_budget">You exceeded
+                      your budget!</span>
+                  </div>
+                </div>
+
+                <form id="saveBudgetsForm" onsubmit="event.preventDefault(); saveBudgets();"
+                  style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                  <div class="field"><label data-i18n="label_food">Food</label><input type="number" id="b_Food"
+                      class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field"><label data-i18n="label_bills">Bills</label><input type="number" id="b_Bills"
+                      class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field"><label data-i18n="label_transport">Transport</label><input type="number"
+                      id="b_Transport" class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field"><label data-i18n="label_shopping">Shopping</label><input type="number"
+                      id="b_Shopping" class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field"><label data-i18n="label_entertainment">Entertainment</label><input type="number"
+                      id="b_Entertainment" class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field"><label data-i18n="label_health">Health</label><input type="number" id="b_Health"
+                      class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field"><label data-i18n="label_other">Other</label><input type="number" id="b_Other"
+                      class="budget-input" min="0" step="0.01" placeholder="0" required></div>
+                  <div class="field" style="grid-column: span 2; margin-top:8px;">
+                    <button type="submit" class="primary" style="width:100%" id="saveBudgetsBtn"
+                      data-i18n="btn_save_budgets">Save Budgets</button>
+                    <div id="saveBudgetsMsg" style="margin-top:10px; font-size:13px; text-align:center;"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Edit Expense Modal -->
+  <div id="editExpenseModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 style="margin-top:0;font-size:18px" data-i18n="title_edit_expense">Edit Expense</h3>
+      <form id="editExpenseForm">
+        <input type="hidden" id="editExpenseId">
+        <div class="field" style="margin-bottom:12px">
+          <label for="editTitle" data-i18n="label_expense_name">Expense Name</label>
+          <input type="text" id="editTitle" required>
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label for="editAmount" data-i18n="label_amount">Amount</label>
+          <input type="number" id="editAmount" step="0.01" required>
+        </div>
+        <div class="field" style="margin-bottom:20px">
+          <label for="editCategory" data-i18n="label_category">Category</label>
+          <select id="editCategory">
+            <option value="Food">🍕 Food</option>
+            <option value="Bills">💡 Bills</option>
+            <option value="Transport">🚗 Transport</option>
+            <option value="Shopping">🛒 Shopping</option>
+            <option value="Entertainment">🎮 Entertainment</option>
+            <option value="Health">💊 Health</option>
+            <option value="Other">📦 Other</option>
+          </select>
+        </div>
+        <div id="editAlert" aria-live="polite"></div>
+        <div style="display:flex;gap:12px;justify-content:flex-end">
+          <button type="button" class="logout" onclick="closeEditModal()" data-i18n="btn_cancel">Cancel</button>
+          <button type="submit" class="primary" id="saveEditBtn" style="display:flex;align-items:center;gap:8px">
+            <span id="editSpinner" class="spinner" style="display:none"></span>
+            <span data-i18n="btn_save_changes">Save Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Account Modal -->
+  <div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 style="margin-top:0;color:var(--danger);font-size:18px" data-i18n="title_confirm_deletion">Confirm Deletion
+      </h3>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.5" data-i18n="text_confirm_deletion">
+        Are you absolutely sure you want to delete your account? All your data will be permanently removed.
+      </p>
+      <p style="font-size:13px;margin-bottom:8px" data-i18n="label_type_delete">Type <strong>DELETE</strong> to confirm:
+      </p>
+      <input type="text" id="deleteConfirmInput" placeholder="DELETE" autocomplete="off"
+        data-i18n-placeholder="placeholder_delete"
+        style="width:100%;padding:12px;margin-bottom:16px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:rgba(0,0,0,0.15);color:#e6eef8;box-sizing:border-box">
+      <div id="deleteAlert" aria-live="polite"></div>
+      <div style="display:flex;gap:12px;justify-content:flex-end">
+        <button id="cancelDeleteBtn" class="logout" style="padding:10px 16px" data-i18n="btn_cancel">Cancel</button>
+        <button id="confirmDeleteBtn" class="btn-sm btn-danger" disabled
+          style="padding:10px 16px;display:flex;align-items:center;gap:8px">
+          <span id="deleteSpinner" class="spinner" style="display:none"></span>
+          <span id="deleteBtnText" data-i18n="btn_delete_account">Delete Account</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- i18n must load before budget.js so language is applied at render time -->
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/budget.js?v=4" defer></script>
+
+</body>
+
+</html>
