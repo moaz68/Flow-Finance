@@ -19,7 +19,7 @@ function showLogin() {
   document.getElementById("registrationForm").style.display = "none";
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("dashboard").style.display = "none";
-  document.getElementById("formTitle").innerText = "تسجيل الدخول";ي
+  document.getElementById("formTitle").innerText = "تسجيل الدخول";
   document.getElementById("message").innerText = "";
 
   const joinText = document.getElementById("joinNowText");
