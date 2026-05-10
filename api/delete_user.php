@@ -7,6 +7,7 @@ authMiddleware();
 $file = "users.json";
 $file2 = "expenses/expense.json";
 $file3="expenses/budgets.json";
+$file4="salary/salary.json";
 
 if(!file_exists($file)){
     echo json_encode([
@@ -32,6 +33,14 @@ if(!file_exists($file3)){
     exit;
 }
 
+if(!file_exists($file4)){
+    echo json_encode([
+        "status" => "error",
+        "message" => "salary file not found"
+    ]);
+    exit;
+}
+
 $loaddata=file_get_contents($file);
 $users =json_decode($loaddata,true);
 
@@ -41,6 +50,8 @@ $Expenses =json_decode($loaddata2,true);
 $loaddata3=file_get_contents($file3);
 $budgets =json_decode($loaddata3,true);
 
+$loaddata4=file_get_contents($file4);
+$salary =json_decode($loaddata4,true);
 
 if(!$users){
     $users=[];
@@ -52,6 +63,10 @@ if(!$Expenses){
 
 if(!$budgets){
     $budgets=[];
+}
+
+if(!$salary){
+    $salary=[];
 }
 
 $data=json_decode(file_get_contents("php://input"),true);
@@ -100,6 +115,14 @@ $filt3=array_filter($budgets,function($b)use($currentEmail){
     }
 });
 
+$filt4=array_filter($salary,function($s)use($currentEmail){
+    if($s["email"]===$currentEmail){
+        return false;
+    }else{
+        return true;
+    }
+});
+
 /*
 foreach($expenses as $i => $ex){
     if(isset($ex["email"]) && $ex["email"] === $currentEmail){
@@ -110,6 +133,7 @@ foreach($expenses as $i => $ex){
 file_put_contents($file,json_encode(array_values($filt),JSON_PRETTY_PRINT));
 file_put_contents($file2,json_encode(array_values($filt2),JSON_PRETTY_PRINT));
 file_put_contents($file3,json_encode(array_values($filt3),JSON_PRETTY_PRINT));
+file_put_contents($file4,json_encode(array_values($filt4),JSON_PRETTY_PRINT));
 
 session_unset();
 session_destroy();
