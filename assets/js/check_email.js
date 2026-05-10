@@ -201,4 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Auto-focus first field
     otpInputs[0].focus();
+    
+
+    verifyBtn.addEventListener('click', () => {
+        const code = Array.from(otpInputs).map(i => i.value).join('');
+        
+        performVerification(code); 
+    });
+    
 });
