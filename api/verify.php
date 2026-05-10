@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 $file = "users.json";
@@ -29,6 +29,13 @@ if(!$data){
 $code = $data["code"];
 $time=time();
 $found=false;
+if(!isset($code) || trim($code)===""){
+    echo json_encode([
+            "status" => "error",
+            "message" => "Sorry, the code is required."
+    ]);
+    exit;
+}
 foreach($users as &$user){
     if( $user["email"] === $data["email"] && isset($user["verify_code"]) && $user["verify_code"] == $code){
         if(($time-strtotime($user["time"]))>120){
