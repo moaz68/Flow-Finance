@@ -1,0 +1,120 @@
+[
+    {
+        "id": 1,
+        "title": "moaz",
+        "amount": "5465",
+        "email": "ali@gamil.com"
+    },
+    {
+        "id": 2,
+        "title": "cars",
+        "amount": "1000",
+        "email": "ali@gamil.com"
+    },
+    {
+        "id": 3,
+        "title": "jhdjkaw",
+        "amount": "5465",
+        "email": "ali@gamil.com"
+    },
+    {
+        "id": 4,
+        "title": "jhdjkaw",
+        "amount": "5465",
+        "email": "ali@gamil.com"
+    },
+    {
+        "id": 5,
+        "title": "اكل وشرب",
+        "amount": "5000",
+        "email": "medo@gmail.com"
+    },
+    {
+        "id": 8,
+        "category": "Food",
+        "date": "2026-05-01",
+        "title": "سمك",
+        "amount": 800,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 9,
+        "category": "Food",
+        "date": "2026-05-01",
+        "title": "بط",
+        "amount": 1000,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 10,
+        "category": "Bills",
+        "date": "2026-05-01",
+        "title": "كهربا",
+        "amount": 500,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 11,
+        "category": "Bills",
+        "date": "2026-05-01",
+        "title": "ميا",
+        "amount": 300,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 12,
+        "category": "Other",
+        "date": "2026-05-01",
+        "title": "مصاريف معاذ",
+        "amount": 1500,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 13,
+        "category": "Other",
+        "date": "2026-05-01",
+        "title": "مصاريف ندي",
+        "amount": 3000,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 14,
+        "category": "Other",
+        "date": "2026-05-01",
+        "title": "مصاريف بسمله",
+        "amount": 500,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 15,
+        "category": "Bills",
+        "date": "2026-05-01",
+        "title": "غاز",
+        "amount": 600,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 16,
+        "category": "Transport",
+        "date": "2026-05-01",
+        "title": "مواصلات للكل",
+        "amount": 1200,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 17,
+        "category": "Shopping",
+        "date": "2026-05-01",
+        "title": "منوعات",
+        "amount": 1000,
+        "email": "mohamed@gmail.com"
+    },
+    {
+        "id": 18,
+        "category": "Health",
+        "date": "2026-05-01",
+        "title": "دوا",
+        "amount": "400",
+        "email": "mohamed@gmail.com"
+    }
+]
