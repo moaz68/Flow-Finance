@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="../assets/css/pro.css"></head>
+<body>
+
+<div class="layout-wrapper">
+  
+  <!-- Language Switcher -->
+  <div class="lang-switcher-top" style="position: absolute; top: 20px; left: 20px; z-index: 1000;">
+    <button onclick="changeLanguage('en')" class="lang-btn" data-i18n="btn_lang_en" style="padding: 8px 12px; border: 1px solid var(--glass-border); background: var(--glass-bg); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--accent-dark); transition: all 0.3s ease; margin-right: 5px;">EN</button>
+    <button onclick="changeLanguage('ar')" class="lang-btn" data-i18n="btn_lang_ar" style="padding: 8px 12px; border: 1px solid var(--glass-border); background: var(--glass-bg); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--accent-dark); transition: all 0.3s ease;">AR</button>
+  </div>
+
+  <!-- Left Side: Branding & Animation -->
+  <div class="animation-side">
+    <div class="branding-text">
+      <p style="font-size: 22px; font-weight: 700; color: var(--accent-dark); margin-bottom: 20px;" data-i18n="branding_text">استثمر بذكاء مع نظامنا الديناميكي</p>
+    </div>
+    
+    <div class="gears-container">
+      <div class="watermark-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+      <i class="fa-solid fa-gear gear gear-1"></i>
+      <i class="fa-solid fa-gear gear gear-2"></i>
+      <i class="fa-solid fa-gear gear gear-3"></i>
+    </div>
+  </div>
+
+  <!-- Right Side: Form -->
+  <div class="form-side">
+    <div class="auth-container">
+      
+      <div class="form-header">
+        <h2 id="formTitle" data-i18n="title_register">إنشاء حساب جديد</h2>
+      </div>
+
+      <div id="message"></div>
+
+      <!-- REGISTER FORM -->
+      <form id="registrationForm">
+        <div class="input-group">
+          <label data-i18n="label_name">الاسم الكامل</label>
+          <i class="fa-regular fa-user"></i>
+          <input type="text" name="name" placeholder="أدخل اسمك الكامل" data-i18n-placeholder="placeholder_name" required>
+        </div>
+        
+        <div class="input-group">
+          <label data-i18n="label_email">البريد الإلكتروني</label>
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" data-i18n-placeholder="placeholder_email" required>
+        </div>
+        
+        <div class="input-group">
+          <label data-i18n="label_password">كلمة المرور</label>
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" placeholder="أدخل كلمة المرور" data-i18n-placeholder="placeholder_password" required>
+        </div>
+        
+        <div class="input-group select-wrapper">
+          <label data-i18n="label_preferred_currency">العملة المفضلة</label>
+          <i class="fa-solid fa-coins"></i>
+          <select name="currency">
+            <option value="USD" data-i18n="currency_usd">دولار أمريكي (USD)</option>
+            <option value="EUR" data-i18n="currency_eur">يورو (EUR)</option>
+            <option value="SAR" data-i18n="currency_sar">ريال سعودي (SAR)</option>
+            <option value="EGP" data-i18n="currency_egp">جنيه مصري (EGP)</option>
+          </select>
+        </div>
+
+        <div id="errorMessage"></div>
+
+        <button type="submit" data-i18n="btn_register">تسجيل</button>
+        <div class="switch" data-i18n="text_already_have_account">لديك حساب بالفعل؟ <span onclick="showLogin()" data-i18n="btn_login_now">تسجيل الدخول</span></div>
+      </form>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" style="display:none;">
+        <div class="input-group">
+          <label data-i18n="label_email">البريد الإلكتروني</label>
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" data-i18n-placeholder="placeholder_email" required>
+        </div>
+        <div class="input-group">
+          <label data-i18n="label_password">كلمة المرور</label>
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" placeholder="أدخل كلمة المرور" data-i18n-placeholder="placeholder_password" required>
+        </div>
+        <div style="text-align: left; margin-top: -10px; margin-bottom: 15px;">
+          <span onclick="showForgotPasswordStep1()" style="color: var(--accent-green); cursor: pointer; font-size: 14px; font-weight: 500;" data-i18n="link_forgot_password">نسيت كلمة المرور؟</span>
+        </div>
+        <button type="submit" data-i18n="btn_login">دخول</button>
+        <div class="switch" data-i18n="text_no_account">ليس لديك حساب؟ <span onclick="showRegister()" data-i18n="btn_register_now">إنشاء حساب جديد</span></div>
+      </form>
+
+      <!-- FORGOT PASSWORD STEP 1 FORM -->
+      <form id="forgotPasswordStep1Form" style="display:none;">
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; text-align: center;" data-i18n="text_forgot_password_step1">أدخل بريدك الإلكتروني لتلقي رمز التحقق لإعادة تعيين كلمة المرور.</p>
+        <div class="input-group">
+          <label data-i18n="label_email">البريد الإلكتروني</label>
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" name="email" id="forgotEmail" placeholder="أدخل بريدك الإلكتروني" data-i18n-placeholder="placeholder_email" required>
+        </div>
+        <div id="forgotErrorMessage1" style="color: #ef4444; font-size: 14px; margin-bottom: 15px; display: none; text-align: center;"></div>
+        <button type="submit" id="forgotBtn1">
+          <span id="forgotBtnText1" data-i18n="btn_send_otp">إرسال الرمز</span>
+        </button>
+        <div class="switch"><span onclick="showLogin()" data-i18n="link_back_to_login">العودة لتسجيل الدخول</span></div>
+      </form>
+
+      <!-- FORGOT PASSWORD STEP 2 FORM -->
+      <form id="forgotPasswordStep2Form" style="display:none;">
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; text-align: center;" data-i18n="text_forgot_password_step2">تم إرسال رمز التحقق إلى بريدك الإلكتروني.</p>
+        <div class="input-group">
+          <label data-i18n="label_otp">رمز التحقق (OTP)</label>
+          <i class="fa-solid fa-key"></i>
+          <input type="text" name="opt" id="forgotOtp" pattern="[0-9]*" placeholder="أدخل الرمز المكون من 6 أرقام" data-i18n-placeholder="placeholder_otp" required>
+        </div>
+        <div class="input-group">
+          <label data-i18n="label_new_password">كلمة المرور الجديدة</label>
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" id="forgotNewPassword" placeholder="أدخل كلمة المرور الجديدة" data-i18n-placeholder="placeholder_new_pass" required>
+        </div>
+        <div class="input-group">
+          <label data-i18n="label_confirm_password">تأكيد كلمة المرور</label>
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="confirmPassword" id="forgotConfirmPassword" placeholder="تأكيد كلمة المرور الجديدة" data-i18n-placeholder="placeholder_conf_pass" required>
+        </div>
+        <div id="forgotErrorMessage2" style="color: #ef4444; font-size: 14px; margin-bottom: 15px; display: none; text-align: center;"></div>
+        <button type="submit" id="forgotBtn2">
+          <span id="forgotBtnText2" data-i18n="btn_confirm_change">إعادة تعيين كلمة المرور</span>
+        </button>
+        <div class="switch"><span onclick="showLogin()" data-i18n="link_back_to_login">العودة لتسجيل الدخول</span></div>
+      </form>
+
+      <!-- DASHBOARD (Fallback) -->
+      <div id="dashboard">
+        <h2 id="welcomeText" style="margin-bottom:10px; color:var(--text-dark);">مرحباً 🎉</h2>
+        
+        <div id="adminPanel" style="margin-bottom:20px; padding:20px; background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.2); border-radius:12px;">
+          <h3 style="margin-bottom:15px; font-size:16px; color:var(--text-dark);">👑 لوحة الإدارة</h3>
+          <button onclick="viewUsers()" style="margin-bottom:10px; width:100%; padding:10px; background:var(--accent-green); border:none; color:white; border-radius:8px;">عرض المستخدمين</button>
+          <button style="width:100%; padding:10px; border-radius:8px; background:rgba(249, 115, 22, 0.1); color:#ea580c; border:1px solid rgba(249,115,22,0.2);" onclick="deleteUser()">حذف مستخدم</button>
+        </div>
+
+        <button class="logout-btn" style="width:100%; padding:10px; border-radius:8px;" onclick="logout()">تسجيل الخروج</button>
+      </div>
+
+      <!-- Glowing Join Now Text -->
+      <div class="join-now-text" id="joinNowText" data-i18n="text_join_now">انضم إلينا الآن</div>
+
+    </div>
+  </div>
+
+</div><script src="../assets/js/i18n.js"></script><script src="../assets/js/pro.js" defer></script>
+</body>
+</html>
